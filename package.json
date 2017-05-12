@@ -1,0 +1,19 @@
+{
+  "name": "content-scraper",
+  "version": "1.0.0",
+  "description": "Package for content scraping app",
+  "main": "scraper.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kevinbehan/content-scraper.git"
+  },
+  "author": "Kevin Behan",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kevinbehan/content-scraper/issues"
+  },
+  "homepage": "https://github.com/kevinbehan/content-scraper#readme"
+}
