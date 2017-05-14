@@ -1,5 +1,6 @@
 const fs = require("fs")
-const scrape = require('website-scraper');
+const jsdom = require("node-jsdom")
+const scrape = require('website-scraper')
 let options = {
   "urls": ['http://shirts4mike.com/shirts.php'],
   "directory": 'data',
@@ -15,6 +16,9 @@ let options = {
 
 scrape(options).then((result) => {
     /*console.log(result[0])*/
+    fs.readdir("/data/shirts", (files)=>{
+        console.log(result.children)
+    })
 }).catch((err) => {
     console.log(err)
     

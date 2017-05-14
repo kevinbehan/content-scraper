@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/kevinbehan/content-scraper#readme",
   "dependencies": {
+    "node-jsdom": "^3.1.5",
     "website-scraper": "^2.4.0"
   }
 }
