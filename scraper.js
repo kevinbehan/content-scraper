@@ -1,13 +1,13 @@
-let fs = require("fs")
-let scrape = require('website-scraper');
+const fs = require("fs")
+const scrape = require('website-scraper');
 let options = {
-  urls: ['http://shirts4mike.com/shirts.php'],
-  directory: 'data',
-  subdirectories: [
-      {directory: 'shirts', extensions: ['.php']}
+  "urls": ['http://shirts4mike.com/shirts.php'],
+  "directory": 'data',
+  "subdirectories": [
+      {"directory": 'shirts', "extensions": ['.php']}
       ],
-  recursive: true,
-  maxRecursiveDepth: 1,
+  "recursive": true,
+  "maxRecursiveDepth": 1,
   urlFilter(url) {
     return url.includes('/shirts.php') || url.includes('/shirt.php')
   }
