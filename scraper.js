@@ -1,25 +1,5 @@
 const fs = require("fs")
+const request = require("request")
 const jsdom = require("node-jsdom")
-const scrape = require('website-scraper')
-let options = {
-  "urls": ['http://shirts4mike.com/shirts.php'],
-  "directory": 'data',
-  "subdirectories": [
-      {"directory": 'shirts', "extensions": ['.php']}
-      ],
-  "recursive": true,
-  "maxRecursiveDepth": 1,
-  urlFilter(url) {
-    return url.includes('/shirts.php') || url.includes('/shirt.php')
-  }
-}
+const json2csv = require('json2csv')
 
-scrape(options).then((result) => {
-    /*console.log(result[0])*/
-    fs.readdir("/data/shirts", (files)=>{
-        console.log(result.children)
-    })
-}).catch((err) => {
-    console.log(err)
-    
-});
