@@ -8,7 +8,7 @@ const fields = ['Title', 'Price', 'URL', 'ImageURL', 'Time'],
 const now = new Date()
 const formattedDate = `${now.getFullYear()}-${now.getMonth()}-${now.getDate()}`
 
-request('http://www.shirts4mike.comsdf/', (err, response, body) => {
+request('http://www.shirts4mike.com', (err, response, body) => {
     if (err) throw err
     if (response.statusCode === 200) {
         jsdom.env(body, (err, window) => {
