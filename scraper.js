@@ -8,22 +8,25 @@ const fields = ['Title', 'Price', 'URL', 'ImageURL', 'Time'],
 const now = new Date()
 const formattedDate = `${now.getFullYear()}-${now.getMonth()}-${now.getDate()}`
 
-request('http://www.shirts4mike.com/', (err, response, body) => {
+request('http://www.shirts4mike.comsdf/', (err, response, body) => {
     if (err) throw err
-    jsdom.env(body, (err, window) => {
-        const shirtAnchors = window.document.querySelectorAll('a[href*="shirt.php?"]')
-        const shirtAnchorHrefs = Array.from(shirtAnchors).map(ele => ele.getAttribute('href'))
+    if (response.statusCode === 200) {
+        jsdom.env(body, (err, window) => {
+            const shirtAnchors = window.document.querySelectorAll('a[href*="shirt.php?"]')
+            const shirtAnchorHrefs = Array.from(shirtAnchors).map(ele => ele.getAttribute('href'))
 
-        shirtAnchorHrefs.map((href) => {
-            request(`http://www.shirts4mike.com/${href}`, (err, response, body) => {
-                if (err) throw err
-                scrapeShirt(body, response)
+            shirtAnchorHrefs.map((href) => {
+                request(`http://www.shirts4mike.com/${href}`, (err, response, body) => {
+                    if (err) throw err
+                    scrapeShirt(body, response)
+                })
             })
-        })
 
-    })
-    /*I don't understand why data is empty at this point in the program? */
-    console.log(data)
+        })
+    }
+    else {
+        console.log(`There's been a ${response.statusCode} error. Cannot connect to http://shirts4mike.com.`)
+    }
 })
 
 function scrapeShirt(rawHTML, response) {
@@ -43,12 +46,16 @@ function scrapeShirt(rawHTML, response) {
         writeToCsv(data)
     })
 }
-function writeToCsv(data){
-    if(!fs.existsSync('data')) fs.mkdir('data')
-    json2csv({'data': data, 'fields': fields}, (err, csv) => {
-        if(err) throw err
+
+function writeToCsv(data) {
+    if (!fs.existsSync('data')) fs.mkdir('data')
+    json2csv({
+        'data': data,
+        'fields': fields
+    }, (err, csv) => {
+        if (err) throw err
         fs.writeFile(`data/${formattedDate}.csv`, csv, (err) => {
-            if(err) throw err
+            if (err) throw err
         })
     })
 }
