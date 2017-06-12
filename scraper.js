@@ -1,7 +1,9 @@
 const fs = require("fs")
 const request = require("request"),
-    jsdom = require("node-jsdom"),
-    json2csv = require('json2csv')
+    json2csv = require('json2csv'),
+    jsdom = require("jsdom"),
+    { JSDOM } = jsdom
+
 
 const fields = ['Title', 'Price', 'URL', 'ImageURL', 'Time'],
     data = []
@@ -11,17 +13,17 @@ const formattedDate = `${now.getFullYear()}-${now.getMonth()}-${now.getDate()}`
 request('http://www.shirts4mike.com', (err, response, body) => {
     if (err) throw err
     if (response.statusCode === 200) {
-        jsdom.env(body, (err, window) => {
-            const shirtAnchors = window.document.querySelectorAll('a[href*="shirt.php?"]')
-            const shirtAnchorHrefs = Array.from(shirtAnchors).map(ele => ele.getAttribute('href'))
+        const {
+            document
+        } = (new JSDOM(body)).window
+        const shirtAnchors = document.querySelectorAll('a[href*="shirt.php?"]')
+        const shirtAnchorHrefs = Array.from(shirtAnchors).map(ele => ele.getAttribute('href'))
 
-            shirtAnchorHrefs.map((href) => {
-                request(`http://www.shirts4mike.com/${href}`, (err, response, body) => {
-                    if (err) throw err
-                    scrapeShirt(body, response)
-                })
+        shirtAnchorHrefs.map((href) => {
+            request(`http://www.shirts4mike.com/${href}`, (err, response, body) => {
+                if (err) throw err
+                scrapeShirt(body, response)
             })
-
         })
     }
     else {
@@ -30,21 +32,19 @@ request('http://www.shirts4mike.com', (err, response, body) => {
 })
 
 function scrapeShirt(rawHTML, response) {
-    jsdom.env(rawHTML, (err, window) => {
-        if (err) throw err
-        const title = window.document.querySelector('title').innerHTML
-        const price = window.document.querySelector('.price').innerHTML
-        const imageUrl = window.document.querySelector('.shirt-picture img').src
-        const url = response.request.href
-        data.push({
-            'Title': title,
-            'Price': price,
-            'ImageURL': imageUrl,
-            'URL': url,
-            'Time': now
-        })
-        writeToCsv(data)
-    })
+    const { document } = (new JSDOM(rawHTML)).window
+    const title = document.querySelector('title').innerHTML
+    const price = document.querySelector('.price').innerHTML
+    const imageUrl = document.querySelector('.shirt-picture img').src
+    const url = response.request.href
+    data.push({
+        'Title': title,
+        'Price': price,
+        'ImageURL': imageUrl,
+        'URL': url,
+        'Time': now
+    }) 
+    writeToCsv(data)
 }
 
 function writeToCsv(data) {
