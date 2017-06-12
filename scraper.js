@@ -13,9 +13,7 @@ const formattedDate = `${now.getFullYear()}-${now.getMonth()}-${now.getDate()}`
 request('http://www.shirts4mike.com', (err, response, body) => {
     if (err) throw err
     if (response.statusCode === 200) {
-        const {
-            document
-        } = (new JSDOM(body)).window
+        const { document } = (new JSDOM(body)).window
         const shirtAnchors = document.querySelectorAll('a[href*="shirt.php?"]')
         const shirtAnchorHrefs = Array.from(shirtAnchors).map(ele => ele.getAttribute('href'))
 
