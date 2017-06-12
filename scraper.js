@@ -11,7 +11,7 @@ const now = new Date()
 const formattedDate = `${now.getFullYear()}-${now.getMonth()}-${now.getDate()}`
 
 request('http://www.shirts4mike.com', (err, response, body) => {
-    if (err) throw err
+    if (err) throw "Cannot find shirts4mike.com. Check your internet connection."
     if (response.statusCode === 200) {
         const { document } = (new JSDOM(body)).window
         const shirtAnchors = document.querySelectorAll('a[href*="shirt.php?"]')
@@ -25,7 +25,7 @@ request('http://www.shirts4mike.com', (err, response, body) => {
         })
     }
     else {
-        console.log(`There's been a ${response.statusCode} error. Cannot connect to http://shirts4mike.com.`)
+        console.log(`Page status is not OKAY.`)
     }
 })
 
@@ -56,4 +56,7 @@ function writeToCsv(data) {
             if (err) throw err
         })
     })
+}
+function ConnectionError(msg){
+    this.msg = msg
 }
