@@ -57,6 +57,3 @@ function writeToCsv(data) {
         })
     })
 }
-function ConnectionError(msg){
-    this.msg = msg
-}
