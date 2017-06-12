@@ -1,5 +1,5 @@
-const fs = require("fs")
-const request = require("request"),
+const fs = require("fs"),
+    request = require("request"),
     json2csv = require('json2csv'),
     jsdom = require("jsdom"),
     { JSDOM } = jsdom
